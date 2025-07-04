@@ -1,0 +1,117 @@
+
+2. أنشئ مشروع جديد
+------------------
+- اضغط على زر + Create Repl
+- اختر اللغة: Python
+- اكتب اسم المشروع: مثلاً discord-mentioner
+- اضغط Create Repl
+
+3. إنشاء المجلد والملفات
+------------------------
+- اضغط على زر + (جنب Files) لإنشاء مجلد جديد اسمه: cogs
+- داخل مجلد cogs، اضغط + لإنشاء ملف جديد باسم: mentioner.py
+- ارجع للمجلد الرئيسي، وأنشئ ملف جديد باسم: main.py
+
+4. انسخ الأكواد التالية في الملفات
+-----------------------------------
+
+في main.py
+-----------
+```python
+import discord
+from discord.ext import commands
+import os
+
+intents = discord.Intents.default()
+intents.members = True  # ضروري
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f"✅ Logged in as {bot.user}")
+
+bot.load_extension("cogs.mentioner")
+
+bot.run(os.environ["TOKEN"])
+```
+
+في cogs/mentioner.py
+---------------------
+```python
+import discord
+from discord.ext import commands
+import asyncio
+
+class Mentioner(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def ناد(self, ctx, *, role_name):
+        role = discord.utils.get(ctx.guild.roles, name=role_name)
+        if not role:
+            await ctx.send("❌ ما لقيت الرول.")
+            return
+
+        members = [m for m in ctx.guild.members if role in m.roles and not m.bot]
+
+        if not members:
+            await ctx.send("❌ ما فيه أحد عنده الرول.")
+            return
+
+        batch_size = 70
+        delay = 3
+        total = len(members)
+        digits = len(str(total))
+
+        for i in range(0, total, batch_size):
+            batch = members[i:i+batch_size]
+            mentions = []
+            for idx, member in enumerate(batch, start=i+1):
+                number = str(idx).zfill(digits)
+                mentions.append(f"{number}. {member.mention}")
+
+            message = f"📣 منشن للرول: **{role.name}**\n\n" + "\n".join(mentions)
+            await ctx.send(message)
+            await asyncio.sleep(delay)
+
+def setup(bot):
+    bot.add_cog(Mentioner(bot))
+```
+
+5. أضف التوكن في Secrets
+--------------------------
+- في Replit، اضغط على زر Secrets (Environment Variables) أو أيقونة القفل 🔒 على الشمال.
+- أضف:
+
+| KEY   | VALUE           |
+|-------|-----------------|
+| TOKEN | توكن البوت حقك  |
+
+6. ثبت مكتبة discord.py
+------------------------
+- افتح التيرمنال (Shell) في Replit
+- اكتب:
+
+pip install discord.py
+
+7. شغل البوت
+------------
+- اضغط زر Run
+- إذا طلع لك:
+
+✅ Logged in as اسم_بوتك
+
+معناه البوت شغال.
+
+8. استخدام الأمر في ديسكورد
+----------------------------
+- اكتب في سيرفرك:
+
+!ناد اسم_الرول
+
+- راح يرسل منشنات على دفعات 70 شخص مع ترقيم.
+
+---
+إذا تبي احتاج شرح بالصور أو فيديو، أو تبيني أرسل لك مشروع Replit جاهز مع التوكن فقط تضيفه، قول لي.
