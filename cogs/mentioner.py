@@ -45,5 +45,5 @@ class Mentioner(commands.Cog):
         except ValueError:
             await ctx.send("❌ الـ Role ID غير صحيح. تأكد من كتابة الأرقام فقط.")
 
-def setup(bot):
-    bot.add_cog(Mentioner(bot))
+async def setup(bot):
+    await bot.add_cog(Mentioner(bot))
