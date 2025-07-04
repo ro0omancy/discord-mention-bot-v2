@@ -15,9 +15,19 @@ run = ["python3", "main.py"]
 deploymentTarget = "cloudrun"
 
 [workflows]
+runButton = "Run"
 
 [[workflows.workflow]]
 name = "Role Mention Bot"
+author = 44581439
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python Role-Mention.py"
+
+[[workflows.workflow]]
+name = "Run"
 author = 44581439
 mode = "sequential"
 
