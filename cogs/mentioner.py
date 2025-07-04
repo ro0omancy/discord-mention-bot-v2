@@ -38,8 +38,10 @@ class Mentioner(commands.Cog):
                 message = f"📣 منشن للرول: {role.mention}\n\n" + "\n".join(mentions)
                 await ctx.channel.send(message)
 
-                # تأخير بين الدفعات لتجنب الحد الأقصى
+                # إضافة فاصل بين المجموعات
                 if i + batch_size < total:
+                    separator = "||--------------------------------||"
+                    await ctx.channel.send(separator)
                     await asyncio.sleep(delay)
 
         except ValueError:
