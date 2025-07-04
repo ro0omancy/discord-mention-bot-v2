@@ -12,8 +12,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f"✅ بوت المنشن شغال: {bot.user}")
-
-# تحميل cog المنشن
-bot.load_extension("cogs.mentioner")
+    # تحميل cog المنشن
+    await bot.load_extension("cogs.mentioner")
 
 bot.run(os.environ["MENTIONER_TOKEN"])
