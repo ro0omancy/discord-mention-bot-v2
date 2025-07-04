@@ -1,4 +1,12 @@
-@commands.command()
+import discord
+from discord.ext import commands
+import asyncio
+
+class Mentioner(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
     async def mention(self, ctx, role_id: int):
         """أمر لمنشن جميع الأعضاء في رول معين باستخدام Role ID"""
         try:
@@ -36,3 +44,6 @@
 
         except ValueError:
             await ctx.send("❌ الـ Role ID غير صحيح. تأكد من كتابة الأرقام فقط.")
+
+def setup(bot):
+    bot.add_cog(Mentioner(bot))
