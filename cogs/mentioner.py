@@ -35,7 +35,7 @@ class Mentioner(commands.Cog):
                     number = str(idx).zfill(digits)
                     mentions.append(f"{number}. {member.mention}")
 
-                message = f"📣 منشن للرول: **{role.name}**\n\n" + "\n".join(mentions)
+                message = f"📣 منشن للرول: {role.mention}\n\n" + "\n".join(mentions)
                 await ctx.channel.send(message)
 
                 # تأخير بين الدفعات لتجنب الحد الأقصى
